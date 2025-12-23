@@ -1,0 +1,73 @@
+@model List<StajyerPlatformu.Models.Interview>
+
+@{
+    ViewData["Title"] = "Mülakatlarım (İşveren)";
+}
+
+<div class="container py-4">
+    <h2 class="mb-3">Mülakatlarım</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Henüz planlanmış mülakatınız yok.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Aday</th>
+                        <th>İlan</th>
+                        <th>Tarih / Saat</th>
+                        <th>Lokasyon</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@i.InternProfile.AppUser.FirstName @i.InternProfile.AppUser.LastName</strong><br />
+                                <small class="text-muted">@i.InternProfile.AppUser.Email</small>
+                            </td>
+                            <td>@i.InternshipPost.Title</td>
+                            <td>@i.ScheduledAt.ToString("g")</td>
+                            <td>@i.Location</td>
+                            <td>
+                                @switch (i.Status)
+                                {
+                                    case StajyerPlatformu.Models.InterviewStatus.Planned:
+                                        <span class="badge bg-warning text-dark">Planlandı</span>
+                                        break;
+                                    case StajyerPlatformu.Models.InterviewStatus.Completed:
+                                        <span class="badge bg-success">Tamamlandı</span>
+                                        break;
+                                    case StajyerPlatformu.Models.InterviewStatus.Canceled:
+                                        <span class="badge bg-danger">İptal</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@i.Id" />
+                                    <input type="hidden" name="status" value="@((int)StajyerPlatformu.Models.InterviewStatus.Completed)" />
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Tamamlandı</button>
+                                </form>
+                                <form asp-action="UpdateStatus" method="post" class="d-inline ms-1">
+                                    <input type="hidden" name="id" value="@i.Id" />
+                                    <input type="hidden" name="status" value="@((int)StajyerPlatformu.Models.InterviewStatus.Canceled)" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">İptal</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+

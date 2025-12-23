@@ -1,0 +1,75 @@
+@model IEnumerable<StajyerPlatformu.Models.InternshipPost>
+
+@{
+    ViewData["Title"] = "İlan Yönetimi";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">İlan Yönetimi</h2>
+        <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Geri Dön</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p class="text-muted mb-3">Toplam İlan: <strong>@Model.Count()</strong></p>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Başlık</th>
+                            <th>İşveren</th>
+                            <th>Şehir</th>
+                            <th>Çalışma Türü</th>
+                            <th>Oluşturulma Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Durum</th>
+                            <th>Başvuru Sayısı</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@item.Title</strong><br>
+                                    <small class="text-muted">@item.Description?.Substring(0, Math.Min(50, item.Description?.Length ?? 0))...</small>
+                                </td>
+                                <td>@item.EmployerProfile?.CompanyName</td>
+                                <td>@item.City</td>
+                                <td>
+                                    <span class="badge bg-info">@item.WorkType</span>
+                                </td>
+                                <td>@item.CreatedDate.ToShortDateString()</td>
+                                <td>@item.Deadline.ToShortDateString()</td>
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Pasif</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">@item.Applications?.Count ?? 0</span>
+                                </td>
+                                <td>
+                                    <form asp-action="DeletePost" method="post" onsubmit="return confirm('Bu ilanı silmek istediğinize emin misiniz?');">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash"></i> Sil
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

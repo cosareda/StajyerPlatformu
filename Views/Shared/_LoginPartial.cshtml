@@ -1,0 +1,47 @@
+@using Microsoft.AspNetCore.Identity
+@using StajyerPlatformu.Models
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    var currentUser = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
+    var userRoles = currentUser != null ? await UserManager.GetRolesAsync(currentUser) : new List<string>();
+}
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a  class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" title="Manage">Merhaba @User.Identity?.Name!</a>
+    </li>
+    @if (userRoles.Contains("Intern"))
+    {
+        <li class="nav-item">
+            <a class="nav-link fw-bold" asp-controller="Intern" asp-action="Index">
+                <i class="bi bi-person-circle me-1"></i>Profilim
+            </a>
+        </li>
+    }
+    @if (User.IsInRole("Admin"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-danger fw-bold" asp-controller="Admin" asp-action="Index">
+                <i class="bi bi-shield-lock-fill me-1"></i>Yönetici Paneli
+            </a>
+        </li>
+    }
+    <li class="nav-item">
+        <form  class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Çıkış Yap</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+    </li>
+}
+</ul>

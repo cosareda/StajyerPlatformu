@@ -1,0 +1,304 @@
+﻿@model StajyerPlatformu.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Kariyerine Yön Ver";
+}
+
+<!-- Hero Section -->
+<div class="hero-section text-center position-relative overflow-hidden">
+    <div class="container position-relative z-index-2">
+        <h1 class="display-3 hero-title mb-4">
+            Geleceğin Yetenekleri,<br>
+            <span class="text-gradient">Bugünün Liderleriyle</span> Buluşuyor
+        </h1>
+        <p class="hero-subtitle mb-5 mx-auto" style="max-width: 700px;">
+            Staj arayan öğrenciler ve yetenekli gençleri keşfetmek isteyen firmalar için
+            tek durak noktası. Kariyer yolculuğunuza bugün başlayın.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg shadow-sm">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Hemen Başla
+                </a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary btn-lg bg-white">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Intern" asp-action="JobSearch" class="btn btn-primary btn-lg shadow-sm">
+                     <i class="bi bi-search me-2"></i>Staj Ara
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Why Us Section -->
+<div class="container my-5 py-5">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Neden StajyerPlatformu?</h2>
+        <p class="text-muted">Hem öğrenciler hem de işverenler için en iyi deneyimi sunuyoruz.</p>
+    </div>
+    <div class="row g-4">
+        <!-- Feature 1 -->
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 shadow-sm card-hover text-center bg-white">
+                <div class="mb-3 text-primary">
+                    <i class="bi bi-person-check fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Kolay Profil Oluşturma</h4>
+                <p class="text-muted">
+                    Detaylı CV ve yetenek profili oluşturun, işverenlerin dikkatini çekin.
+                </p>
+            </div>
+        </div>
+        <!-- Feature 2 -->
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 shadow-sm card-hover text-center bg-white">
+                <div class="mb-3 text-success">
+                    <i class="bi bi-buildings fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Seçkin Firmalar</h4>
+                <p class="text-muted">
+                    Sektörün önde gelen firmalarının staj ilanlarına tek tıkla ulaşın.
+                </p>
+            </div>
+        </div>
+        <!-- Feature 3 -->
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 shadow-sm card-hover text-center bg-white">
+                <div class="mb-3 text-info">
+                    <i class="bi bi-lightning-charge fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Hızlı Başvuru</h4>
+                <p class="text-muted">
+                    İlanları filtreleyin, size uygun olanlara anında başvurun ve süreci takip edin.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats / Counter Section -->
+<div class="bg-primary bg-gradient text-white py-5 my-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="display-4 fw-bold">@Model.Interns.Count()</div>
+                <div class="fs-5 opacity-75">Kayıtlı Stajyer</div>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="display-4 fw-bold">@Model.Employers.Count()</div>
+                <div class="fs-5 opacity-75">İşveren Firma</div>
+            </div>
+            <div class="col-md-4">
+                <div class="display-4 fw-bold">@ViewBag.ActivePosts</div>
+                <div class="fs-5 opacity-75">Aktif İlan</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stajyerler İçin Section -->
+<div class="container my-5 py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="text-center text-lg-start">
+                <h2 class="fw-bold mb-4">Stajyerler İçin</h2>
+                <p class="lead text-muted mb-4">
+                    Kariyer yolculuğunuza doğru adımla başlayın. Profesyonel staj fırsatları sizi bekliyor.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <strong>Kolay Profil Oluşturma:</strong> CV'nizi yükleyin, yeteneklerinizi ekleyin
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <strong>Geniş İlan Seçenekleri:</strong> Binlerce staj ilanı arasından seçim yapın
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <strong>Hızlı Başvuru:</strong> Tek tıkla ilanlara başvurun ve durumunuzu takip edin
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <strong>Profesyonel Ağ:</strong> Sektörün önde gelen firmalarıyla tanışın
+                    </li>
+                </ul>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg mt-3">
+                        <i class="bi bi-person-plus me-2"></i>Hemen Kayıt Ol
+                    </a>
+                }
+                else if (User.IsInRole("Intern"))
+                {
+                    <a asp-controller="Intern" asp-action="JobSearch" class="btn btn-primary btn-lg mt-3">
+                        <i class="bi bi-search me-2"></i>Staj Ara
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="bg-gradient-primary text-white p-5 text-center">
+                        <i class="bi bi-person-workspace display-1 mb-3"></i>
+                        <h4 class="fw-bold">Stajyer Profili</h4>
+                        <p class="mb-0">Kendinizi en iyi şekilde tanıtın</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="row g-3 text-center">
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="bi bi-file-earmark-pdf fs-2 text-primary mb-2"></i>
+                                    <div class="small fw-bold">CV Yükle</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="bi bi-briefcase fs-2 text-success mb-2"></i>
+                                    <div class="small fw-bold">İlan Ara</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="bi bi-send fs-2 text-info mb-2"></i>
+                                    <div class="small fw-bold">Başvur</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="bi bi-check-circle fs-2 text-warning mb-2"></i>
+                                    <div class="small fw-bold">Takip Et</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- İşverenler İçin Section -->
+<div class="bg-light py-5 my-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                <div class="text-center text-lg-start">
+                    <h2 class="fw-bold mb-4">İşverenler İçin</h2>
+                    <p class="lead text-muted mb-4">
+                        Yetenekli gençleri keşfedin. Şirketiniz için en uygun stajyer adaylarını bulun.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <strong>Firma Profili Oluşturun:</strong> Şirketinizi tanıtın, logo ve bilgilerinizi ekleyin
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <strong>Staj İlanı Yayınlayın:</strong> Detaylı ilan oluşturun, hedef kitlenize ulaşın
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <strong>Adayları İnceleyin:</strong> Başvuruları görüntüleyin, CV'leri indirin
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                            <strong>Kolay Yönetim:</strong> Başvuruları kabul/ret edin, durumları takip edin
+                        </li>
+                    </ul>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg mt-3">
+                            <i class="bi bi-building me-2"></i>Firma Kaydı Oluştur
+                        </a>
+                    }
+                    else if (User.IsInRole("Employer"))
+                    {
+                        <a asp-controller="Employer" asp-action="CreatePost" class="btn btn-primary btn-lg mt-3">
+                            <i class="bi bi-plus-circle me-2"></i>Yeni İlan Oluştur
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="bg-gradient-primary text-white p-5 text-center">
+                            <i class="bi bi-building display-1 mb-3"></i>
+                            <h4 class="fw-bold">İşveren Paneli</h4>
+                            <p class="mb-0">Stajyer adaylarınızı yönetin</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="row g-3 text-center">
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="bi bi-file-earmark-plus fs-2 text-primary mb-2"></i>
+                                        <div class="small fw-bold">İlan Oluştur</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="bi bi-people fs-2 text-success mb-2"></i>
+                                        <div class="small fw-bold">Aday Gör</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="bi bi-file-earmark-pdf fs-2 text-info mb-2"></i>
+                                        <div class="small fw-bold">CV İndir</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="bi bi-check2-all fs-2 text-warning mb-2"></i>
+                                        <div class="small fw-bold">Değerlendir</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Members Preview (Optional) -->
+<div class="container mb-5 pb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="fw-bold mb-3">Aramıza Katılan Son Üyeler</h2>
+            <p class="text-muted mb-4">Platformumuz her geçen gün büyüyor. En yeni yetenekler ve firmalar burada.</p>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary">Tümünü Gör <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-3">
+                @foreach (var intern in Model.Interns.Take(2))
+                {
+                    <div class="col-6">
+                        <div class="p-3 border rounded-3 bg-white shadow-sm text-center">
+                            <i class="bi bi-person-circle fs-2 text-secondary mb-2"></i>
+                            <h6 class="fw-bold text-truncate">@intern.FirstName @intern.LastName</h6>
+                            <small class="text-success">Stajyer</small>
+                        </div>
+                    </div>
+                }
+                @foreach (var employer in Model.Employers.Take(2))
+                {
+                    <div class="col-6">
+                        <div class="p-3 border rounded-3 bg-white shadow-sm text-center">
+                            <i class="bi bi-building fs-2 text-secondary mb-2"></i>
+                            <h6 class="fw-bold text-truncate">@employer.FirstName @employer.LastName</h6>
+                            <small class="text-primary">İşveren</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

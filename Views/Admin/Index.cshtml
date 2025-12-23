@@ -1,0 +1,202 @@
+@model StajyerPlatformu.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<div class="container-fluid py-4 bg-light admin-panel-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Yönetici Paneli</h2>
+        <div class="d-flex gap-2">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark-excel"></i> Excel Raporları
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-action="ExportUsersExcel">Kullanıcı Listesi</a></li>
+                    <li><a class="dropdown-item" asp-action="ExportJobsExcel">İlan Listesi</a></li>
+                    <li><a class="dropdown-item" asp-action="ExportApplicationsExcel">Başvuru Listesi</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark-pdf"></i> PDF Raporları
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-action="ExportApplicationsPdf">Başvuru Listesi</a></li>
+                </ul>
+            </div>
+            <a asp-action="Logs" class="btn btn-dark"><i class="bi bi-terminal"></i> Log Kayıtları</a>
+        </div>
+    </div>
+
+    <!-- Management Links -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <a asp-action="Users" class="card text-decoration-none border-0 shadow-sm card-hover h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people fs-1 text-primary mb-3"></i>
+                    <h5 class="fw-bold">Kullanıcı Yönetimi</h5>
+                    <p class="text-muted mb-0">Tüm kullanıcıları görüntüle ve yönet</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-action="Posts" class="card text-decoration-none border-0 shadow-sm card-hover h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-briefcase fs-1 text-success mb-3"></i>
+                    <h5 class="fw-bold">İlan Yönetimi</h5>
+                    <p class="text-muted mb-0">Tüm ilanları görüntüle ve yönet</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a asp-action="Applications" class="card text-decoration-none border-0 shadow-sm card-hover h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-file-earmark-text fs-1 text-info mb-3"></i>
+                    <h5 class="fw-bold">Başvuru Yönetimi</h5>
+                    <p class="text-muted mb-0">Tüm başvuruları görüntüle</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-white bg-primary bg-gradient rounded-3 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="card-title mb-0">Toplam Kullanıcı</h6>
+                        <i class="bi bi-people fs-4"></i>
+                    </div>
+                    <h2 class="display-6 fw-bold mb-2">@Model.TotalUsers</h2>
+                    <div class="small opacity-75" style="line-height: 1.4;">@Model.TotalInterns Stajyer | @Model.TotalEmployers İşveren</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-white bg-warning bg-gradient rounded-3 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                         <h6 class="card-title mb-0">Onay Bekleyenler</h6>
+                         <i class="bi bi-hourglass-split fs-4"></i>
+                    </div>
+                    <h2 class="display-6 fw-bold mb-2">@Model.PendingApprovals</h2>
+                     <div class="small opacity-75" style="line-height: 1.4;">Aksiyon Gerekli</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-white bg-success bg-gradient rounded-3 h-100">
+                <div class="card-body">
+                     <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="card-title mb-0">Toplam İlan</h6>
+                        <i class="bi bi-briefcase fs-4"></i>
+                    </div>
+                    <h2 class="display-6 fw-bold mb-2">@Model.TotalJobs</h2>
+                    <div class="small opacity-75" style="line-height: 1.4;">Aktif staj fırsatı</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-white bg-info bg-gradient rounded-3 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="card-title mb-0">Başvurular</h6>
+                         <i class="bi bi-file-earmark-text fs-4"></i>
+                    </div>
+                    <h2 class="display-6 fw-bold mb-2">@Model.TotalApplications</h2>
+                    <div class="small opacity-75" style="line-height: 1.4;">Sistem üzerinden yapılan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <!-- User Approval Table -->
+        <div class="col-lg-8 mb-4 mb-lg-0">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold text-danger"><i class="bi bi-person-check-fill me-2"></i> Onay Bekleyen Kullanıcılar</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Ad Soyad</th>
+                                    <th>Email</th>
+                                    <th>Kayıt Tarihi</th>
+                                    <th class="text-end pe-4">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.PendingUsers)
+                                {
+                                    <tr>
+                                        <td class="ps-4 fw-bold">@user.FirstName @user.LastName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.CreatedAt.ToShortDateString()</td>
+                                        <td class="text-end pe-4">
+                                            <form asp-action="ApproveUser" method="post">
+                                                <input type="hidden" name="id" value="@user.Id" />
+                                                <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">
+                                                    <i class="bi bi-check-circle me-1"></i> Onayla
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                                @if(!Model.PendingUsers.Any())
+                                {
+                                     <tr>
+                                         <td colspan="4" class="text-center py-4 text-muted">
+                                             Bekleyen onay kaydı bulunmamaktadır.
+                                         </td>
+                                     </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Jobs -->
+        <div class="col-lg-4">
+             <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i> Son Eklenen İlanlar</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                         @foreach (var post in Model.RecentJobs)
+                        {
+                            <li class="list-group-item px-4 py-3 d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1 me-3" style="min-width: 0;">
+                                    <div class="fw-bold mb-1 text-break">@post.Title</div>
+                                    <small class="text-muted d-block">@post.EmployerProfile?.AppUser?.FirstName @post.EmployerProfile?.AppUser?.LastName</small>
+                                </div>
+                                <form asp-action="DeleteJob" method="post" class="flex-shrink-0" onsubmit="return confirm('Bu ilanı silmek istediğinize emin misiniz?');">
+                                     <input type="hidden" name="id" value="@post.Id" />
+                                     <button type="submit" class="btn btn-sm btn-outline-danger">
+                                         <i class="bi bi-trash"></i>
+                                     </button>
+                                </form>
+                            </li>
+                        }
+                        @if(!Model.RecentJobs.Any())
+                        {
+                            <li class="list-group-item px-4 py-3 text-center text-muted">
+                                Henüz ilan eklenmemiş.
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">

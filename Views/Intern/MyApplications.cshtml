@@ -1,0 +1,44 @@
+@model IEnumerable<StajyerPlatformu.Models.Application>
+
+@{
+    ViewData["Title"] = "Başvurularım";
+}
+
+<h2>Başvurularım</h2>
+<hr />
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Firma</th>
+            <th>İlan Başlığı</th>
+            <th>Başvuru Tarihi</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.InternshipPost.EmployerProfile.CompanyName</td>
+                <td>@item.InternshipPost.Title</td>
+                <td>@item.ApplicationDate.ToShortDateString()</td>
+                 <td>
+                    @if(item.Status == StajyerPlatformu.Models.ApplicationStatus.Pending) { <span class="badge bg-warning text-dark">Beklemede</span> }
+                    else if (item.Status == StajyerPlatformu.Models.ApplicationStatus.Accepted) { <span class="badge bg-success">Kabul</span> }
+                    else { <span class="badge bg-danger">Red</span> }
+                </td>
+                <td>
+                    <a asp-controller="Messages"
+                       asp-action="Create"
+                       asp-route-receiverId="@item.InternshipPost.EmployerProfile.AppUserId"
+                       asp-route-subject="@($"İlan: {item.InternshipPost.Title}")"
+                       class="btn btn-sm btn-outline-primary">
+                        Mesaj Gönder
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,53 @@
+@model StajyerPlatformu.Models.EmployerProfile
+
+@{
+    ViewData["Title"] = "Firma Profili Oluştur";
+}
+
+<h2>Firma Profilini Tamamla</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="CreateProfile" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="mb-3">
+                <label asp-for="CompanyName" class="form-label">Firma Adı</label>
+                <input asp-for="CompanyName" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Sector" class="form-label">Sektör</label>
+                <input asp-for="Sector" class="form-control" />
+                <span asp-validation-for="Sector" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="City" class="form-label">Şehir / Lokasyon</label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Firma Logosu</label>
+                <input type="file" name="logoFile" class="form-control" accept="image/*" />
+            </div>
+
+             <div class="mb-3">
+                <label asp-for="Website" class="form-label">Web Sitesi</label>
+                <input asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Firma Hakkında</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </form>
+    </div>
+</div>

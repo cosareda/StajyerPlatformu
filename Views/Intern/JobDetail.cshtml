@@ -1,0 +1,161 @@
+@model StajyerPlatformu.Models.InternshipPost
+@{
+    ViewData["Title"] = Model.Title;
+    bool hasApplied = (bool)(ViewBag.HasApplied ?? false);
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="JobSearch">İlanlar</a></li>
+                    <li class="breadcrumb-item active">@Model.Title</li>
+                </ol>
+            </nav>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Job Header -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-3">
+                        @if (!string.IsNullOrEmpty(Model.EmployerProfile?.LogoPath))
+                        {
+                            <img src="@Model.EmployerProfile.LogoPath" alt="Logo" class="me-3 rounded" style="width: 80px; height: 80px; object-fit: contain;">
+                        }
+                        else
+                        {
+                            <div class="bg-light rounded p-3 me-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="bi bi-building fs-1 text-secondary"></i>
+                            </div>
+                        }
+                        <div class="flex-grow-1">
+                            <h1 class="h3 fw-bold mb-2">@Model.Title</h1>
+                            <h5 class="text-primary mb-2">@Model.EmployerProfile?.CompanyName</h5>
+                            <div class="d-flex flex-wrap gap-3 text-muted small">
+                                <span><i class="bi bi-geo-alt me-1"></i>@Model.City</span>
+                                <span><i class="bi bi-briefcase me-1"></i>@Model.WorkType</span>
+                                @if (!string.IsNullOrEmpty(Model.Duration))
+                                {
+                                    <span><i class="bi bi-clock me-1"></i>@Model.Duration</span>
+                                }
+                                <span><i class="bi bi-calendar me-1"></i>Son Başvuru: @Model.Deadline.ToShortDateString()</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Description -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-file-text me-2"></i>İlan Detayları</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="job-description">
+                        @Html.Raw(Model.Description?.Replace("\n", "<br>"))
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Info -->
+            @if (Model.EmployerProfile != null)
+            {
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-building me-2"></i>Firma Hakkında</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="text-muted mb-2"><strong>Sektör:</strong> @Model.EmployerProfile.Sector</p>
+                        @if (!string.IsNullOrEmpty(Model.EmployerProfile.City))
+                        {
+                            <p class="text-muted mb-2"><strong>Lokasyon:</strong> @Model.EmployerProfile.City</p>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.EmployerProfile.Description))
+                        {
+                            <p class="text-muted">@Model.EmployerProfile.Description</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <!-- Apply Card -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4 text-center">
+                        @if (hasApplied)
+                        {
+                            <div class="alert alert-success mb-3">
+                                <i class="bi bi-check-circle me-2"></i>Bu ilana zaten başvurdunuz.
+                            </div>
+                            <a asp-action="MyApplications" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-list-ul me-2"></i>Başvurularımı Gör
+                            </a>
+                        }
+                        else
+                        {
+                            <h5 class="fw-bold mb-3">Bu İlana Başvur</h5>
+                            <p class="text-muted small mb-3">Başvurunuz işverene iletilecek ve değerlendirilecektir.</p>
+                            <form asp-action="Apply" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-send me-2"></i>Başvur
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+
+                <!-- Quick Info -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2"></i>Hızlı Bilgiler</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="bi bi-calendar-check text-primary me-2"></i>
+                                <strong>Yayın Tarihi:</strong><br>
+                                <span class="text-muted">@Model.CreatedDate.ToShortDateString()</span>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-calendar-x text-danger me-2"></i>
+                                <strong>Son Başvuru:</strong><br>
+                                <span class="text-muted">@Model.Deadline.ToShortDateString()</span>
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-people text-success me-2"></i>
+                                <strong>Başvuru Sayısı:</strong><br>
+                                <span class="text-muted">@Model.Applications.Count başvuru</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .job-description {
+        line-height: 1.8;
+        color: #333;
+    }
+    .job-description p {
+        margin-bottom: 1rem;
+    }
+</style>
+
+
+
+
+

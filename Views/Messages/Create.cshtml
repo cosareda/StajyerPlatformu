@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Mesaj Gönder";
+    var receiver = (StajyerPlatformu.Models.AppUser)ViewBag.Receiver;
+    string? subject = ViewBag.Subject as string;
+}
+
+<div class="container py-4">
+    <h2 class="mb-3">Mesaj Gönder</h2>
+    <p class="text-muted">Alıcı: <strong>@receiver.FirstName @receiver.LastName (@receiver.Email)</strong></p>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" name="receiverId" value="@receiver.Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Konu</label>
+            <input type="text" name="subject" class="form-control" value="@subject" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mesaj</label>
+            <textarea name="content" class="form-control" rows="5"></textarea>
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <span class="text-danger small">Mesaj içeriği boş olamaz.</span>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gönder</button>
+        <a asp-action="Inbox" class="btn btn-secondary ms-2">Gelen Kutusuna Dön</a>
+    </form>
+</div>
+
+

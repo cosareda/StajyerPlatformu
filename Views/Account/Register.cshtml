@@ -1,0 +1,78 @@
+@model StajyerPlatformu.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold mb-2">@ViewData["Title"]</h2>
+                        <p class="text-muted">Hesabınızı oluşturun ve kariyer yolculuğunuza başlayın</p>
+                    </div>
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" minlength="6" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <small class="text-muted">En az 6 karakter, büyük harf, küçük harf ve rakam içermelidir.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserRole" class="form-label"></label>
+                            <select asp-for="UserRole" class="form-select">
+                                <option value="">Hesap Türü Seçiniz</option>
+                                <option value="Intern">Stajyer (Öğrenci)</option>
+                                <option value="Employer">İşveren (Firma)</option>
+                            </select>
+                            <span asp-validation-for="UserRole" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>Kayıt Ol
+                            </button>
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">Zaten hesabınız var mı? <a asp-action="Login" class="fw-bold">Giriş Yap</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

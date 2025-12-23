@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Mülakat Planla";
+    var post = (StajyerPlatformu.Models.InternshipPost)ViewBag.Post;
+    var intern = (StajyerPlatformu.Models.InternProfile)ViewBag.Intern;
+}
+
+<div class="container py-4">
+    <h2 class="mb-3">Mülakat Planla</h2>
+
+    <div class="mb-3">
+        <strong>Aday:</strong> @intern.AppUser.FirstName @intern.AppUser.LastName (@intern.AppUser.Email)<br />
+        <strong>İlan:</strong> @post.Title
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info">@TempData["Message"]</div>
+    }
+
+    <form asp-action="Schedule" method="post">
+        <input type="hidden" name="internProfileId" value="@intern.Id" />
+        <input type="hidden" name="postId" value="@post.Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Tarih ve Saat</label>
+            <input type="datetime-local" name="scheduledAt" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Lokasyon (Online / Adres)</label>
+            <input type="text" name="location" class="form-control" value="Online" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Not (opsiyonel)</label>
+            <textarea name="note" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a asp-controller="Employer" asp-action="Index" class="btn btn-secondary ms-2">İşveren Paneline Dön</a>
+    </form>
+</div>
+
+

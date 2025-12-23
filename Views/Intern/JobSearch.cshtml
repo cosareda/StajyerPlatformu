@@ -1,0 +1,150 @@
+@model IEnumerable<StajyerPlatformu.Models.InternshipPost>
+@{
+    ViewData["Title"] = "Staj İlanları";
+    var cities = (List<string>)ViewBag.Cities ?? new List<string>();
+    var companies = (List<string>)ViewBag.Companies ?? new List<string>();
+}
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow-sm border-0 sticky-top" style="top: 100px; z-index: 100;">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-funnel"></i> Filtrele</h5>
+                    <form asp-action="JobSearch" method="get">
+                        <!-- Search Keyword -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted fw-bold">Anahtar Kelime</label>
+                            <input type="text" name="searchString" class="form-control form-control-sm" placeholder="Pozisyon, açıklama..." value="@Context.Request.Query["searchString"]">
+                        </div>
+
+                        <!-- Company Filter -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted fw-bold">Firma Adı</label>
+                            <select name="companyName" class="form-select form-select-sm">
+                                <option value="">Tümü</option>
+                                @foreach (var company in companies)
+                                {
+                                    var isSelected = Context.Request.Query["companyName"] == company;
+                                    <option value="@company" selected="@isSelected">@company</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- City Filter -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted fw-bold">Şehir</label>
+                            <select name="city" class="form-select form-select-sm">
+                                <option value="">Tümü</option>
+                                @foreach (var city in cities)
+                                {
+                                    var isSelected = Context.Request.Query["city"] == city;
+                                    <option value="@city" selected="@isSelected">@city</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Work Type Filter -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted fw-bold">Çalışma Şekli</label>
+                            <select name="workType" class="form-select form-select-sm">
+                                <option value="">Tümü</option>
+                                @{
+                                    var workTypes = new[] { "Ofis", "Remote", "Hibrit" };
+                                    var selectedWorkType = Context.Request.Query["workType"];
+                                }
+                                @foreach (var wt in workTypes)
+                                {
+                                    var isSelected = selectedWorkType == wt;
+                                    <option value="@wt" selected="@isSelected">@wt</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                             <button type="submit" class="btn btn-primary btn-sm">Uygula</button>
+                             <a asp-action="JobSearch" class="btn btn-outline-secondary btn-sm">Temizle</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Listings -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 mb-0 fw-bold">Güncel İlanlar</h2>
+                <span class="badge bg-light text-dark border">@Model.Count() ilan bulundu</span>
+            </div>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                     <div class="mb-3 text-muted display-1"><i class="bi bi-search"></i></div>
+                     <h4 class="text-muted">Aradığınız kriterlere uygun ilan bulunamadı.</h4>
+                     <a asp-action="JobSearch" class="btn btn-primary mt-3">Filtreleri Temizle</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-12 mb-3">
+                            <div class="card shadow-sm border-0 card-hover">
+                                <div class="card-body p-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2 text-center mb-3 mb-md-0">
+                                            @if (!string.IsNullOrEmpty(item.EmployerProfile?.LogoPath))
+                                            {
+                                                <img src="@item.EmployerProfile.LogoPath" alt="Logo" class="img-fluid rounded" style="max-height: 60px;">
+                                            }
+                                            else
+                                            {
+                                                <div class="bg-light rounded p-3 d-inline-block">
+                                                    <i class="bi bi-building fs-2 text-secondary"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-md-7">
+                                            <h5 class="card-title fw-bold mb-1">@item.Title</h5>
+                                            <p class="mb-1 text-primary fw-bold">@item.EmployerProfile?.CompanyName</p>
+                                            <div class="text-muted small mb-2">
+                                                 <span class="me-3"><i class="bi bi-geo-alt me-1"></i>@item.City</span>
+                                                 <span class="me-3"><i class="bi bi-briefcase me-1"></i>@item.WorkType</span>
+                                                 @if(!string.IsNullOrEmpty(item.Duration)) { <span><i class="bi bi-clock me-1"></i>@item.Duration</span> }
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-md-end">
+                                            <small class="d-block text-muted mb-2">Son: @item.Deadline.ToShortDateString()</small>
+                                            <div class="d-grid gap-2">
+                                                <a asp-action="JobDetail" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-eye me-1"></i>Detay
+                                                </a>
+                                                <form asp-action="Apply" method="post">
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                                                        <i class="bi bi-send me-1"></i>Başvur
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

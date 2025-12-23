@@ -1,0 +1,32 @@
+@model List<StajyerPlatformu.Models.Message>
+
+@{
+    ViewData["Title"] = "Gönderilen Mesajlar";
+}
+
+<div class="container py-4">
+    <h2 class="mb-3">Gönderilen Mesajlar</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Henüz gönderdiğiniz mesaj yok.</p>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var m in Model)
+            {
+                <div class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fw-bold">@m.Receiver.FirstName @m.Receiver.LastName</div>
+                        <div class="small text-muted">@m.Subject ?? "(Başlık yok)"</div>
+                        <div>@m.Content</div>
+                    </div>
+                    <span class="small text-muted">@m.SentAt.ToString("g")</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+

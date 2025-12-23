@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using StajyerPlatformu.Models
+@inject UserManager<AppUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="StajyerPlatformu - Genç yetenekleri ve öncü firmaları bir araya getiren modern kariyer platformu. Staj ilanları, CV yükleme ve başvuru takibi." />
+    <meta name="keywords" content="staj, stajyer, iş ilanları, kariyer, staj başvurusu, stajyer arama, işveren" />
+    <meta name="author" content="StajyerPlatformu" />
+    <title>@ViewData["Title"] - StajyerPlatformu | Staj ve Kariyer Platformu</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StajyerPlatformu.styles.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fs-4" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-briefcase-fill me-2"></i>Stajyer<span class="text-secondary">Platformu</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-medium">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                        </li>
+                        @{
+                            var currentUser = User.Identity?.IsAuthenticated == true ? await UserManager.GetUserAsync(User) : null;
+                            var userRoles = currentUser != null ? await UserManager.GetRolesAsync(currentUser) : new List<string>();
+                        }
+                        @if (userRoles.Contains("Intern"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Intern" asp-action="JobSearch">Staj Ara</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Intern" asp-action="MyApplications">Başvurularım</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Messages" asp-action="Inbox">Mesajlarım</a>
+                            </li>
+                            <li class="nav-item">
+
+                            </li>
+                        }
+                        @if (userRoles.Contains("Employer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Employer" asp-action="Index">İşveren Paneli</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="flex-grow-1">
+        @RenderBody()
+    </main>
+
+    <footer class="footer mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold mb-4">StajyerPlatformu</h5>
+                    <p class="text-muted small">
+                        Genç yetenekleri ve öncü firmaları bir araya getiren modern kariyer platformu.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold mb-4">Hızlı Erişim</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a asp-controller="Home" asp-action="Index" class="footer-link">Anasayfa</a></li>
+                        @if (User.IsInRole("Intern"))
+                        {
+                            <li class="mb-2"><a asp-controller="Intern" asp-action="JobSearch" class="footer-link">Staj Ara</a></li>
+                            <li class="mb-2"><a asp-controller="Messages" asp-action="Inbox" class="footer-link">Mesajlarım</a></li>
+
+                        }
+                        @if (User.IsInRole("Employer"))
+                        {
+                            <li class="mb-2"><a asp-controller="Employer" asp-action="Index" class="footer-link">İşveren Paneli</a></li>
+                        }
+                        <li class="mb-2"><a asp-controller="Home" asp-action="Privacy" class="footer-link">Gizlilik Politikası</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold mb-4">İletişim</h5>
+                    <p class="text-muted small">
+                        <i class="bi bi-envelope me-2"></i> info@stajyerplatformu.com<br>
+                        <i class="bi bi-geo-alt me-2"></i> Teknoloji Fakültesi
+                    </p>
+                </div>
+            </div>
+            <div class="border-top pt-3 mt-3 text-center text-muted small">
+                &copy; 2025 StajyerPlatformu - Tüm Hakları Saklıdır.
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
