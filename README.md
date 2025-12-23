@@ -2,9 +2,6 @@
 
 Proje başarıyla oluşturulmuştur. Tüm isterler (ASP.NET Core MVC, Identity, SQLite, Entity Framework Core, Responsive Tasarım, PDF Raporlama) yerine getirilmiştir.
 
-## Projeye Erişim
-Proje dizini: `C:\Users\EdaCosar\.gemini\antigravity\scratch\StajyerPlatformu`
-
 ## Nasıl Çalıştırılır?
 1. Visual Studio veya VS Code ile projeyi açın.
 2. Terminali açın ve proje dizinine gidin.
